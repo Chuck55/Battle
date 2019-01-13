@@ -1,0 +1,5 @@
+{normal Potion} 20 5
+Weapons
+{Pair of Chopsticks} 10 0
+Stats
+30 30 1 0 5 10
