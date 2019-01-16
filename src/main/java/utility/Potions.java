@@ -1,4 +1,4 @@
-package com.rpg;
+package utility;
 
 public class Potions extends Items {
     private int healing;

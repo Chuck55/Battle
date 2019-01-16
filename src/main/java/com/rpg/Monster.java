@@ -1,8 +1,12 @@
 package com.rpg;
 
+import utility.Items;
+
 public class Monster {
+    private String name;
     private int health;
     private int totalHealth;
+    private int changedDamage;
     private int damage;
     private Items dropItem;
     private int defense;
@@ -11,16 +15,34 @@ public class Monster {
     private String SecondVoiceLine;
     private String ThirdVoiceLine;
 
-    public Monster(int health, int damage, int critChance, int defense, String FirstVoiceLine, String SecondVoiceLine, String ThirdVoiceLine, Items dropItem) {
+    public Monster(String name, int health, int damage, int critChance, int defense, String FirstVoiceLine, String SecondVoiceLine, String ThirdVoiceLine, Items dropItem) {
+        this.name = name;
         this.health = health;
         this.defense = defense;
         this.totalHealth = health;
         this.damage = damage;
+        this.changedDamage = damage;
         this.critChance = critChance;
         this.FirstVoiceLine = FirstVoiceLine;
         this.SecondVoiceLine = SecondVoiceLine;
         this.ThirdVoiceLine = ThirdVoiceLine;
         this.dropItem = dropItem;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public int getChangedDamage() {
+        return changedDamage;
+    }
+
+    public void setChangedDamage(int changedDamage) {
+        this.changedDamage = changedDamage;
     }
 
     public int getDefense() {

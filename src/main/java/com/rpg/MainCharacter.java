@@ -1,5 +1,8 @@
 package com.rpg;
 
+import utility.Bag;
+import utility.Weapons;
+
 public class MainCharacter {
     String name;
     Weapons equippedWeapon;
@@ -23,44 +26,45 @@ public class MainCharacter {
         defense = 5;
         realDefense = 5;
         exp = 0;
-        defense = 5;
-        attackDamage = 500;
+        defense = 3;
+        attackDamage = 10;
         critChance = 5;
     }
 
     public void levelUp() {
         level++;
-        health += 2;
+        health += 3;
         totalHealth += 2;
-        defense += 1;
+        defense += 2;
+        realDefense += 1;
         attackDamage += 2;
-        exp -= 100;
-        attackDamage += 1;
+        exp = exp - 100;
+        System.out.println("WOW! LEVEL UP! You are now Level " + level);
+        System.out.println("Health + 2 = " + health);
+        System.out.println("Defense + 2 = " + defense);
+        System.out.println("Damage + 2 = " + attackDamage);
         return;
     }
 
     public void exp(int givenExp) {
         exp += givenExp;
-        if (exp >= 100) {
+        while (exp >= 100) {
             levelUp();
         }
         return;
     }
 
     public void equipWeapon(Weapons weapon) {
-        if(equippedWeapon!= null) {
-            bigBag.weaponItems.add(equippedWeapon);
-            attackDamage = attackDamage - equippedWeapon.attackDamage + weapon.attackDamage;
-            critChance = critChance - equippedWeapon.addedCrit + weapon.addedCrit;
-            bigBag.weaponItems.remove(weapon);
+        if (equippedWeapon != null) {
+            bigBag.getWeaponItems().add(equippedWeapon);
+            attackDamage = attackDamage - equippedWeapon.getAttackDamage() + weapon.getAttackDamage();
+            critChance = critChance - equippedWeapon.getAddedCrit() + weapon.getAddedCrit();
+            bigBag.getWeaponItems().remove(weapon);
+        } else {
+            attackDamage = attackDamage + weapon.getAttackDamage();
+            critChance = critChance + weapon.getAddedCrit();
+            bigBag.getWeaponItems().remove(weapon);
         }
-        else
-        {
-            attackDamage = attackDamage + weapon.attackDamage;
-            critChance = critChance + weapon.addedCrit;
-            bigBag.weaponItems.remove(weapon);
-        }
-
 
 
     }

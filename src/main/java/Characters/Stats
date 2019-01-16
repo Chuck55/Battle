@@ -1,0 +1,54 @@
+Name    Health      Attack      Crit        Defense
+                    Bosses
+Kyle    550         40          10          17
+Orien   600         34          5           18
+Linus   600         29          1           17
+Gabe    700         25          5           20
+Samuel  550         28          5           16
+Daniel  460         25          5           14
+Kevin   355         22          15          12
+Martin  200         20          12          10
+
+                    Lower Minions
+
+Brit    75         9          5            4
+Wendy   60         8          12           3
+Q       70         7          7            5
+Jay     60         9          12           2
+Jessica 80         10         7            6
+
+
+                    Midtier Minions
+Nathan  110         10         0            6
+Darren  130         11         3            8
+Peter   120         12         5            7
+Jason   150         13         2            9
+Daniel  140         13         10           11
+
+                    HighMidtier Minions
+Shawn   200        15          3            7
+Andrew  200        16          2            9
+William 250        15          2            8
+Jonah   300        14          9            9
+David   325        17          7            9
+
+                    High Minions
+Andy    300        17          3            9
+Emily   315        19          8            10
+Sarah   350        18          10           10
+Dora    325        17          15           11
+
+
+                    Higher Minions
+Iris    375         21          12          10
+Sierra  425         24          13          12
+Alice   400         22          15          13
+Doreen  350         26          20          15
+
+                    Even Higher Minions
+Melody  500         29          16          14
+Shinze  520         27          13          16
+Hannah  525         26          14          18
+BShawn  550         28          15          17
+
+
