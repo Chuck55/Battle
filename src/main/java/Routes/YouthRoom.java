@@ -8,7 +8,6 @@ import java.io.FileNotFoundException;
 
 public class YouthRoom implements BaseRoute {
 
-
     @Override
     public void printLocation(ParentVariable defeated) {
         System.out.println(" Currently you are in the Youth Room, what would would you like to do?");
@@ -27,9 +26,10 @@ public class YouthRoom implements BaseRoute {
         SaveGame saveGame = new SaveGame();
         BallRoom ballRoom = new BallRoom();
         boolean correct;
+        String choice;
         do {
             printLocation(defeated);
-            String choice = saveGame.getScanner().nextLine();
+            choice = saveGame.getScanner().nextLine();
             System.out.println(choice);
             switch (choice) {
                 case "person":
@@ -51,7 +51,7 @@ public class YouthRoom implements BaseRoute {
                     correct = false;
                     System.out.println("Not a valid entry, Please reenter");
                     break;
-                case "save" :
+                case "save":
                     saveGame.print(newPastor);
                 default:
                     correct = false;

@@ -7,9 +7,6 @@ import com.rpg.SaveGame;
 import java.io.FileNotFoundException;
 
 public class BasketBallCourt implements BaseRoute {
-    private SaveGame saveGame;
-    private BallRoom ballRoom;
-
 
     @Override
     public void printLocation(ParentVariable defeated) {
@@ -30,9 +27,9 @@ public class BasketBallCourt implements BaseRoute {
         SaveGame saveGame = new SaveGame();
         BallRoom ballRoom = new BallRoom();
         boolean correct;
+        String choice;
         do {
             printLocation(defeated);
-            String choice = saveGame.getScanner().nextLine();
             choice = saveGame.getScanner().nextLine();
             System.out.println(choice);
             switch (choice) {

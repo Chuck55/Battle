@@ -4,72 +4,75 @@ import com.rpg.MainCharacter;
 import com.rpg.Monster;
 import com.rpg.ParentVariable;
 import com.rpg.SaveGame;
+import utility.Bag;
+import utility.Potions;
 
+import java.util.Map;
 import java.util.Random;
 import java.util.Scanner;
 
-public class DanielBattle implements BattleBase {
-    SaveGame saveGame;
+public class JasonBattle implements BattleBase {
+    private SaveGame saveGame;
+    int count = 0;
 
-    public DanielBattle() {
+    public JasonBattle() {
         saveGame = new SaveGame();
     }
 
-    public boolean DanielFight(MainCharacter newPastor, Monster monster, ParentVariable defeated) {
+    public boolean Jasonfight(MainCharacter newPastor, Monster monster, ParentVariable defeated) {
+        Scanner scanner = new Scanner(System.in);
         boolean VL1 = false;
         boolean VL2 = false;
         boolean VL3 = false;
-        Scanner newScanner = saveGame.getScanner();
-        int totalHealth;
-        printScores(newPastor, monster);
-        while (newPastor.getHealth() > 0 && monster.getTotalHealth() > 0) {
-            choiceMove(newPastor, monster);
+        int monsterHealth = monster.getHealth();
+        while (newPastor.getHealth() > 0 && monster.getHealth() > 0) {
+            count++;
+            int totalHealth = monster.getTotalHealth();
             checkHealth(defeated, monster);
-            totalHealth = monster.getTotalHealth();
-            printVoiceline(VL1, VL2, VL3, totalHealth, monster);
-            DanielAttack(newPastor, monster);
+            choiceMove(newPastor, monster);
+            if (totalHealth < monsterHealth / 3 && !VL3) {
+                System.out.println(monster.getThirdVoiceLine());
+                VL3 = true;
+            } else if (totalHealth < monsterHealth * 2 / 3 && !VL2) {
+                System.out.println(monster.getSecondVoiceLine());
+                VL2 = true;
+            } else if (totalHealth < monsterHealth && !VL1) {
+                System.out.println(monster.getFirstVoiceLine());
+                VL1 = true;
+            }
+            JasonAttack(newPastor, monster, count);
             newPastor.setDefense(newPastor.getRealDefense());
             if (newPastor.getTotalHealth() <= 0) {
-                defeated.danielDefeated = false;
+                defeated.jasonDefeated = false;
                 break;
             }
+
             printScores(newPastor, monster);
-            System.out.println();
         }
-        newScanner.close();
-        if (!defeated.danielDefeated) {
-            System.out.println("Daniel: Dang, i'm sorry dude, but you gotta train more");
+        scanner.close();
+        if (!defeated.jasonDefeated) {
+            System.out.println("Epic victory royale, hehehehe");
         } else {
+            System.out.println("oh......");
             System.out.println("Gained 50 EXP");
             newPastor.exp(50);
-            System.out.println("Daniel: Dang..... I Guess i'm not strong enough.....");
         }
         return false;
     }
 
-    public void DanielAttack(MainCharacter newPastor, Monster mon) {
+    public void JasonAttack(MainCharacter newPastor, Monster mon, int count) {
+        int totalDamage = mon.getDamage();
         Random rand = new Random();
-        int monsterAttack = mon.getDamage();
-        System.out.println("Its my turn now!");
         int x = rand.nextInt(100);
-        if (x < 25) {
-            System.out.println("Wow, I hit a crit!");
-            mon.setChangedDamage(monsterAttack* 3);
-        } else {
-            System.out.print("Ummmm, just wait, imma get u ---- ");
-            mon.setChangedDamage(0);
-        }
-        x = rand.nextInt(100);
         if (x < mon.getCritChance()) {
-            mon.setChangedDamage(mon.getChangedDamage()*3);
+            totalDamage = totalDamage * 3;
         }
-        mon.setChangedDamage(mon.getChangedDamage() - newPastor.getDefense());
-        if(mon.getChangedDamage() <= 0)
-        {
-            mon.setChangedDamage(0);
+        totalDamage -= newPastor.getDefense();
+        if (totalDamage <= 0) {
+            totalDamage = 0;
         }
-        System.out.println("Enemy did " + mon.getChangedDamage() + " Points of Damage");
-        newPastor.setTotalHealth(newPastor.getTotalHealth() - mon.getChangedDamage());
+        System.out.println("Enemy did " + totalDamage + " Points of Damage");
+        newPastor.setTotalHealth(newPastor.getTotalHealth() - totalDamage);
     }
 
     @Override
@@ -80,21 +83,12 @@ public class DanielBattle implements BattleBase {
             VL3 = true;
             VL2 = true;
             VL1 = true;
-            monster.setDamage(monster.getDamage()+2);
-            monster.setDefense(monster.getDefense()+2);
-            System.out.println("Enemy's attack and defense increased");
         } else if (totalHealth < monsterHealth * 2 / 3 && !VL2) {
             System.out.println(monster.getSecondVoiceLine());
             VL2 = true;
             VL1 = true;
-            monster.setDamage(monster.getDamage()+2);
-            monster.setDefense(monster.getDefense()+2);
-            System.out.println("Enemy's attack and defense increased");
         } else if (totalHealth < monsterHealth && !VL1) {
             System.out.println(monster.getFirstVoiceLine());
-            monster.setDamage(monster.getDamage()+2);
-            monster.setDefense(monster.getDefense()+2);
-            System.out.println("Enemy's attack and defense increased");
             VL1 = true;
         }
     }
@@ -109,7 +103,7 @@ public class DanielBattle implements BattleBase {
     @Override
     public void checkHealth(ParentVariable defeated, Monster monster) {
         if (monster.getTotalHealth() <= 0) {
-            defeated.danielDefeated = true;
+            defeated.jasonDefeated = true;
         }
     }
 
@@ -138,6 +132,25 @@ public class DanielBattle implements BattleBase {
                     break;
                 case 4:
                     newPastor.getBigBag().showPotions();
+                    x = newScanner.nextInt();
+                    Map<Potions, Integer> potions = newPastor.getBigBag().getConsumableItems();
+                    int count = 0;
+                    for (Potions key : potions.keySet()) {
+                        if (count == x && potions.get(key) > 0) {
+                            newPastor.setTotalHealth(key.getHealing() + newPastor.getTotalHealth());
+                            System.out.println("You recovered " + key.getHealing() + " Points of health");
+                            if (newPastor.getTotalHealth() > newPastor.getHealth()) {
+                                newPastor.setTotalHealth(newPastor.getHealth());
+                            }
+                            potions.put(key, potions.get(key) - 1);
+                            if (potions.get(key) <= 0) {
+                                potions.remove(key);
+                            }
+                            break;
+                        } else {
+                            count++;
+                        }
+                    }
                     break;
                 default:
                     System.out.println("Please enter a viable option");
@@ -148,6 +161,9 @@ public class DanielBattle implements BattleBase {
     @Override
     public void attack(MainCharacter newPastor, Monster mon) {
         int totalDamage = newPastor.getAttackDamage();
+        if (count % 2 == 0) {
+            totalDamage /= (3 / 2);
+        }
         Random rand = new Random();
         int x = rand.nextInt(100);
         if (x < newPastor.getCritChance()) {
@@ -155,12 +171,11 @@ public class DanielBattle implements BattleBase {
             System.out.println("Wow! A Crit! You did " + totalDamage + " points of Damage");
         }
         totalDamage -= mon.getDefense();
-        if(totalDamage <= 0)
-        {
+        if (totalDamage <= 0) {
             totalDamage = 0;
         }
         System.out.println("You did " + totalDamage + " points of Damage");
         mon.setTotalHealth(mon.getTotalHealth() - totalDamage);
     }
-
 }
+

@@ -23,7 +23,7 @@ public class Battle implements BattleBase {
         if (x < mon.getCritChance()) {
             totalDamage = totalDamage * 3 - newPastor.getDefense();
         }
-        System.out.println("Enemy did " + totalDamage + " Amount of Damage");
+        System.out.println("Enemy did " + totalDamage + " Points of Damage");
         newPastor.setTotalHealth(newPastor.getTotalHealth() - totalDamage);
     }
 
@@ -129,7 +129,6 @@ public class Battle implements BattleBase {
     @Override
     public void choiceMove(MainCharacter newPastor, Monster monster) {
         Scanner newScanner = saveGame.getScanner();
-        int attackDamage = 0;
         int choice = 5;
         while (choice > 4) {
             System.out.println("Press 1 to attack, 2 to defend, 3 to equip new Weapon, 4 to heal ");

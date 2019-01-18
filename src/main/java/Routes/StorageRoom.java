@@ -8,10 +8,7 @@ import java.io.FileNotFoundException;
 
 public class StorageRoom implements BaseRoute{
     private SaveGame saveGame = new SaveGame();
-    private boolean correct;
-    private String choice;
-    private BallRoom ballRoom;
-    private YouthRoom youthRoom;
+
     @Override
     public void printLocation(ParentVariable defeated) {
         System.out.println(" Currently you are in the Storage Room, what would would you like to do?");
@@ -29,11 +26,12 @@ public class StorageRoom implements BaseRoute{
 
     @Override
     public void activities(MainCharacter newPastor, ParentVariable defeated) throws FileNotFoundException {
-        ballRoom = new BallRoom();
-        youthRoom = new YouthRoom();
+        BallRoom ballRoom = new BallRoom();
+        YouthRoom youthRoom = new YouthRoom();
+        boolean correct;
+        String choice;
         do {
             printLocation(defeated);
-            choice = saveGame.getScanner().nextLine();
             choice = saveGame.getScanner().nextLine();
             System.out.println(choice);
             switch (choice) {

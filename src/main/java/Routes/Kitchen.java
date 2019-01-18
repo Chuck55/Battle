@@ -9,9 +9,6 @@ import com.rpg.SaveGame;
 import java.io.FileNotFoundException;
 
 public class Kitchen implements BaseRoute {
-    private SaveGame saveGame;
-    private static Entrance entrance;
-    private BallRoom ballRoom;
 
     @Override
     public void printLocation(ParentVariable defeated) {
@@ -35,9 +32,9 @@ public class Kitchen implements BaseRoute {
         BallRoom ballRoom = new BallRoom();
         SaveGame saveGame = new SaveGame();
         Entrance entrance = new Entrance();
+        String choice;
         do {
             printLocation(defeated);
-            String choice = saveGame.getScanner().nextLine();
             choice = saveGame.getScanner().nextLine();
             System.out.println(choice);
             switch (choice) {

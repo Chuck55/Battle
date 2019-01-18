@@ -7,9 +7,6 @@ import com.rpg.SaveGame;
 import java.io.FileNotFoundException;
 
 public class Nursery implements BaseRoute {
-    private SaveGame saveGame;
-    private BallRoom ballRoom;
-    private ChildrenRoom childrenRoom;
 
     @Override
     //nursery = new Location(null, "Nursery", ballRoom, null, childrenRoom, null);
@@ -33,9 +30,9 @@ public class Nursery implements BaseRoute {
         BallRoom ballRoom = new BallRoom();
         ChildrenRoom childrenRoom = new ChildrenRoom();
         boolean correct;
+        String choice;
         do {
             printLocation(defeated);
-            String choice = saveGame.getScanner().nextLine();
             choice = saveGame.getScanner().nextLine();
             System.out.println(choice);
             switch (choice) {
@@ -56,9 +53,9 @@ public class Nursery implements BaseRoute {
                     break;
                 case "behind":
                     correct = true;
-                    childrenRoom.activities(newPastor,defeated);
+                    childrenRoom.activities(newPastor, defeated);
                     break;
-                case "save" :
+                case "save":
                     saveGame.print(newPastor);
                 default:
                     correct = false;

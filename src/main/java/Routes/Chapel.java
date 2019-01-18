@@ -25,9 +25,9 @@ public class Chapel implements BaseRoute {
         SaveGame saveGame = new SaveGame();
         BallRoom ballRoom = new BallRoom();
         boolean correct;
+        String choice;
         do {
             printLocation(defeated);
-            String choice = saveGame.getScanner().nextLine();
             choice = saveGame.getScanner().nextLine();
             System.out.println(choice);
             switch (choice) {

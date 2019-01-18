@@ -4,7 +4,9 @@ import com.rpg.MainCharacter;
 import com.rpg.Monster;
 import com.rpg.ParentVariable;
 import com.rpg.SaveGame;
+import utility.Potions;
 
+import java.util.Map;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -31,45 +33,40 @@ public class QBattle implements BattleBase {
             QAttack(newPastor, monster);
             newPastor.setDefense(newPastor.getRealDefense());
             if (newPastor.getTotalHealth() <= 0) {
-                defeated.danielDefeated = false;
+                defeated.qDefeated = false;
                 break;
             }
             printScores(newPastor, monster);
             System.out.println();
         }
         newScanner.close();
-        if (!defeated.danielDefeated) {
-            System.out.println("Daniel: Dang, i'm sorry dude, but you gotta train more");
+        if (!defeated.qDefeated) {
+            System.out.println("");
         } else {
             System.out.println("Gained 50 EXP");
             newPastor.exp(50);
-            System.out.println("Daniel: Dang..... I Guess i'm not strong enough.....");
+            System.out.println("");
         }
         return false;
     }
 
     public void QAttack(MainCharacter newPastor, Monster mon) {
+        int totalDamage = mon.getDamage();
+        System.out.println(totalDamage);
         Random rand = new Random();
-        int monsterAttack = mon.getDamage();
-        System.out.println("Its my turn now!");
         int x = rand.nextInt(100);
-        if (x < 25) {
-            System.out.println("Wow, I hit a crit!");
-            mon.setChangedDamage(monsterAttack * 3);
-        } else {
-            System.out.print("Ummmm, just wait, imma get u ---- ");
-            mon.setChangedDamage(0);
-        }
-        x = rand.nextInt(100);
         if (x < mon.getCritChance()) {
-            mon.setChangedDamage(mon.getChangedDamage() * 3);
+            totalDamage = totalDamage * 3;
         }
-        mon.setChangedDamage(mon.getChangedDamage() - newPastor.getDefense());
-        if (mon.getChangedDamage() <= 0) {
-            mon.setChangedDamage(0);
+        System.out.println(totalDamage);
+        totalDamage -= -newPastor.getDefense();
+        System.out.println(totalDamage);
+        System.out.println(totalDamage);
+        if (totalDamage <= 0) {
+            totalDamage = 0;
         }
-        System.out.println("Enemy did " + mon.getChangedDamage() + " Amount of Damage");
-        newPastor.setTotalHealth(newPastor.getTotalHealth() - mon.getChangedDamage());
+        System.out.println("Enemy did " + totalDamage + " Points of Damage");
+        newPastor.setTotalHealth(newPastor.getTotalHealth() - totalDamage);
     }
 
     @Override
@@ -80,21 +77,12 @@ public class QBattle implements BattleBase {
             VL3 = true;
             VL2 = true;
             VL1 = true;
-            monster.setDamage(monster.getDamage() + 2);
-            monster.setDefense(monster.getDefense() + 2);
-            System.out.println("Enemy's attack and defense increased");
         } else if (totalHealth < monsterHealth * 2 / 3 && !VL2) {
             System.out.println(monster.getSecondVoiceLine());
             VL2 = true;
             VL1 = true;
-            monster.setDamage(monster.getDamage() + 2);
-            monster.setDefense(monster.getDefense() + 2);
-            System.out.println("Enemy's attack and defense increased");
         } else if (totalHealth < monsterHealth && !VL1) {
             System.out.println(monster.getFirstVoiceLine());
-            monster.setDamage(monster.getDamage() + 2);
-            monster.setDefense(monster.getDefense() + 2);
-            System.out.println("Enemy's attack and defense increased");
             VL1 = true;
         }
     }
@@ -109,7 +97,7 @@ public class QBattle implements BattleBase {
     @Override
     public void checkHealth(ParentVariable defeated, Monster monster) {
         if (monster.getTotalHealth() <= 0) {
-            defeated.orienDefeated = true;
+            defeated.qDefeated = true;
         }
     }
 
@@ -138,6 +126,25 @@ public class QBattle implements BattleBase {
                     break;
                 case 4:
                     newPastor.getBigBag().showPotions();
+                    x = newScanner.nextInt();
+                    Map<Potions, Integer> potions = newPastor.getBigBag().getConsumableItems();
+                    int count = 0;
+                    for (Potions key : potions.keySet()) {
+                        if (count == x && potions.get(key) > 0) {
+                            newPastor.setTotalHealth(key.getHealing() + newPastor.getTotalHealth());
+                            System.out.println("You recovered " + key.getHealing() + " Points of health");
+                            if (newPastor.getTotalHealth() > newPastor.getHealth()) {
+                                newPastor.setTotalHealth(newPastor.getHealth());
+                            }
+                            potions.put(key, potions.get(key) - 1);
+                            if (potions.get(key) <= 0) {
+                                potions.remove(key);
+                            }
+                            break;
+                        } else {
+                            count++;
+                        }
+                    }
                     break;
                 default:
                     System.out.println("Please enter a viable option");

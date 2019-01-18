@@ -8,11 +8,6 @@ import java.io.FileNotFoundException;
 
 public class Upstairs implements BaseRoute {
     private SaveGame saveGame = new SaveGame();
-    private FireSideRoom fireSideRoom;
-    private Chapel chapel;
-    private boolean correct;
-    private String choice;
-    private Entrance entrance;
 
     @Override
     public void printLocation(ParentVariable defeated) {
@@ -31,12 +26,13 @@ public class Upstairs implements BaseRoute {
 
     @Override
     public void activities(MainCharacter newPastor, ParentVariable defeated) throws FileNotFoundException {
-        entrance = new Entrance();
-        chapel = new Chapel();
-        fireSideRoom = new FireSideRoom();
+        Entrance entrance = new Entrance();
+        Chapel chapel = new Chapel();
+        FireSideRoom fireSideRoom = new FireSideRoom();
+        boolean correct;
+        String choice;
         do {
             printLocation(defeated);
-            choice = saveGame.getScanner().nextLine();
             choice = saveGame.getScanner().nextLine();
             System.out.println(choice);
             switch (choice) {
@@ -59,7 +55,7 @@ public class Upstairs implements BaseRoute {
                     correct = true;
                     entrance.activities(newPastor, defeated);
                     break;
-                case "save" :
+                case "save":
                     saveGame.print(newPastor);
                 default:
                     correct = false;

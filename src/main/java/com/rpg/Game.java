@@ -132,10 +132,10 @@ class Game {
         saveGame.printOrder("RichardIntro.txt");
         newPastor.getBigBag().obtainedPotion(normalPotion, 5);
         newPastor.getBigBag().obtainedWeapon(chopSticks);
-        // saveGame.printOrder("meetOrien.txt");
+        saveGame.printOrder("meetOrien.txt");
         wBattle.startingOrienFight(newPastor, weakOrien, defeated);
         newPastor.getBigBag().obtainedKeyItem(keyToCloset);
-        //saveGame.printOrder("defeatedOrien.txt");
+        saveGame.printOrder("defeatedOrien.txt");
         entrance.activities(newPastor, defeated);
         //strongOrien.orienRealFight(newPastor, Daniel, defeated);
         saveGame.print(newPastor);

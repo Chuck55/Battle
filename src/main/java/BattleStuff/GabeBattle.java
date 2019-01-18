@@ -70,7 +70,7 @@ public class GabeBattle implements BattleBase {
         {
             totalDamage = 0;
         }
-        System.out.println("Enemy did " + totalDamage + " Amount of Damage");
+        System.out.println("Enemy did " + totalDamage + " Points of Damage");
         newPastor.setTotalHealth(newPastor.getTotalHealth() - totalDamage);
     }
 
@@ -111,7 +111,7 @@ public class GabeBattle implements BattleBase {
     @Override
     public void checkHealth(ParentVariable defeated, Monster monster) {
         if (monster.getTotalHealth() <= 0) {
-            defeated.orienDefeated = true;
+            defeated.gabeDefeated = true;
         }
     }
 

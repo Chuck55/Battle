@@ -33,9 +33,9 @@ public class ChildrenRoom implements BaseRoute {
         BallRoom ballRoom = new BallRoom();
         Nursery nursery = new Nursery();
         boolean correct;
+        String choice;
         do {
             printLocation(defeated);
-            String choice = saveGame.getScanner().nextLine();
             choice = saveGame.getScanner().nextLine();
             System.out.println(choice);
             switch (choice) {

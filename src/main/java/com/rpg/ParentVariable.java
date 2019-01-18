@@ -11,7 +11,8 @@ public class ParentVariable {
     public boolean kevinDefeated;
     public boolean shawnDefeated;
     public boolean martinDefeated;
-
+    public boolean qDefeated;
     public boolean andrewDefeated;
     public boolean melodyDefeated;
+    public boolean jasonDefeated;
 }

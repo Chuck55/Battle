@@ -3,27 +3,22 @@ package Routes;
 import com.rpg.MainCharacter;
 import com.rpg.ParentVariable;
 import com.rpg.SaveGame;
-import javafx.scene.Parent;
 
 import java.io.FileNotFoundException;
 
 
 public class Entrance implements BaseRoute {
     private SaveGame saveGame = new SaveGame();
-    private Upstairs upstairs;
-    private boolean correct;
-    private String choice;
-    Kitchen kitchen;
-    ParkingLot parkingLot;
 
     @Override
     public void activities(MainCharacter newPastor, ParentVariable defeated) throws FileNotFoundException {
-        upstairs = new Upstairs();
-        kitchen = new Kitchen();
-        parkingLot = new ParkingLot();
+        Upstairs upstairs = new Upstairs();
+        Kitchen kitchen = new Kitchen();
+        ParkingLot parkingLot = new ParkingLot();
+        String choice;
+        boolean correct;
         do {
             printLocation(defeated);
-            choice = saveGame.getScanner().nextLine();
             choice = saveGame.getScanner().nextLine();
             System.out.println(choice);
             switch (choice) {

@@ -52,7 +52,7 @@ public class LowTier {
             );
     public Monster Q = new Monster
             (
-                    "Brittany",
+                    "Q",
                     70,
                     7,
                     7,

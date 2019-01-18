@@ -4,7 +4,9 @@ import com.rpg.MainCharacter;
 import com.rpg.Monster;
 import com.rpg.ParentVariable;
 import com.rpg.SaveGame;
+import utility.Potions;
 
+import java.util.Map;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -48,8 +50,9 @@ public class LinusBattle implements BattleBase {
         }
         scanner.close();
         if (!defeated.linusDefeated) {
-            System.out.println("Monster");
+            System.out.println("HAHAHAHAHA, I TOLD YOU I REIGN SUPREME!");
         } else {
+            System.out.println("Yes, I assure you, losing was all part of my master plan.....");
             System.out.println("Gained 50 EXP");
             newPastor.exp(50);
             System.out.println("oof");
@@ -64,12 +67,11 @@ public class LinusBattle implements BattleBase {
         if (x < mon.getCritChance()) {
             totalDamage = totalDamage * 3;
         }
-        totalDamage-=newPastor.getDefense();
-        if(totalDamage <= 0)
-        {
+        totalDamage -= newPastor.getDefense();
+        if (totalDamage <= 0) {
             totalDamage = 0;
         }
-        System.out.println("Enemy did " + totalDamage + " Amount of Damage");
+        System.out.println("Enemy did " + totalDamage + " Points of Damage");
         newPastor.setTotalHealth(newPastor.getTotalHealth() - totalDamage);
     }
 
@@ -110,7 +112,7 @@ public class LinusBattle implements BattleBase {
     @Override
     public void checkHealth(ParentVariable defeated, Monster monster) {
         if (monster.getTotalHealth() <= 0) {
-            defeated.orienDefeated = true;
+            defeated.linusDefeated = true;
         }
     }
 
@@ -139,6 +141,25 @@ public class LinusBattle implements BattleBase {
                     break;
                 case 4:
                     newPastor.getBigBag().showPotions();
+                    x = newScanner.nextInt();
+                    Map<Potions, Integer> potions = newPastor.getBigBag().getConsumableItems();
+                    int count = 0;
+                    for (Potions key : potions.keySet()) {
+                        if (count == x && potions.get(key) > 0) {
+                            newPastor.setTotalHealth(key.getHealing() + newPastor.getTotalHealth());
+                            System.out.println("You recovered " + key.getHealing() + " Points of health");
+                            if (newPastor.getTotalHealth() > newPastor.getHealth()) {
+                                newPastor.setTotalHealth(newPastor.getHealth());
+                            }
+                            potions.put(key, potions.get(key) - 1);
+                            if (potions.get(key) <= 0) {
+                                potions.remove(key);
+                            }
+                            break;
+                        } else {
+                            count++;
+                        }
+                    }
                     break;
                 default:
                     System.out.println("Please enter a viable option");

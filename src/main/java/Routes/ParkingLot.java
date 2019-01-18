@@ -6,9 +6,8 @@ import com.rpg.SaveGame;
 
 import java.io.FileNotFoundException;
 
-public class ParkingLot implements BaseRoute{
-    private SaveGame saveGame;
-    private Entrance entrance;
+public class ParkingLot implements BaseRoute {
+
     @Override
     public void printLocation(ParentVariable defeated) {
         System.out.println(" Currently you are in the Parking Lot, what would would you like to do?");
@@ -27,9 +26,9 @@ public class ParkingLot implements BaseRoute{
         SaveGame saveGame = new SaveGame();
         Entrance entrance = new Entrance();
         boolean correct;
+        String choice;
         do {
             printLocation(defeated);
-            String choice = saveGame.getScanner().nextLine();
             choice = saveGame.getScanner().nextLine();
             System.out.println(choice);
             switch (choice) {
@@ -52,7 +51,7 @@ public class ParkingLot implements BaseRoute{
                     correct = false;
                     System.out.println("Not a valid entry, Please reenter");
                     break;
-                case "save" :
+                case "save":
                     saveGame.print(newPastor);
                 default:
                     correct = false;

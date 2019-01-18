@@ -1,7 +1,6 @@
-Wow, nice job!
-I didn't think you would be so strong!
-As a reward, I think that I'll give you a secret item i've hanging onto
-Obtained Mysterious Key
-Where does it lead to? Well, it leads to..... Oh, nevermind. I won't tell you.
-Ive got stuff to do.
-See ya later!
+Orien : Wow, nice job!
+Orien : I didn't think you'd be so strong!
+Orien : As a reward, I think that I'll give you a secret item i've hanging onto
+Orien : Obtained Mysterious Key
+Orien : Where does it lead to? Well, it leads to..... Oh, nevermind. I won't tell you.
+Orien : Ive got stuff to do, see ya later!
