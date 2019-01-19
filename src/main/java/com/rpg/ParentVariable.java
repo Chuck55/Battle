@@ -15,4 +15,26 @@ public class ParentVariable {
     public boolean andrewDefeated;
     public boolean melodyDefeated;
     public boolean jasonDefeated;
+    public boolean jessicaDefeated;
+    public boolean brittanyDefeated;
+    public boolean jayDefeated;
+    public boolean wendyDefeated;
+    public boolean nathanDefeated;
+    public boolean peterDefeated;
+    public boolean ldanielDefeated;
+    public boolean darrenDefeated;
+    public boolean williamDefeated;
+    public boolean davidDefeated;
+    public boolean jonahDefeated;
+    public boolean andyDefeated;
+    public boolean emilyDefeated;
+    public boolean sarahDefeated;
+    public boolean doraDefeated;
+    public boolean irisDefeated;
+    public boolean hannahDefeated;
+    public boolean sierraDefeated;
+    public boolean aliceDefeated;
+    public boolean doreenDefeated;
+    public boolean shinzeDefeated;
+    public boolean bshawnDefeated;
 }

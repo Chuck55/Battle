@@ -1,5 +1,6 @@
-package BattleStuff;
+package stillneedsABilitews;
 
+import BattleStuff.BattleBase;
 import com.rpg.MainCharacter;
 import com.rpg.Monster;
 import com.rpg.ParentVariable;
@@ -10,66 +11,61 @@ import java.util.Map;
 import java.util.Random;
 import java.util.Scanner;
 
-public class WeakOrienBattle implements BattleBase {
+public class DoraBattle implements BattleBase {
     private SaveGame saveGame;
+    int count = 0;
 
-    public WeakOrienBattle() {
+    public DoraBattle() {
         saveGame = new SaveGame();
     }
 
-    public boolean startingOrienFight(MainCharacter newPastor, Monster monster, ParentVariable defeated) {
-        printScores(newPastor, monster);
-        int counter = 0;
-        while (newPastor.getHealth() > 0 && monster.getTotalHealth() > 0) {
-            System.out.println();
-            switch (counter) {
-                case 0:
-                    System.out.println("Orien : See that button called 1? That allows you to attack your opponent. Give it a try, don't worry, my abs are hard as rock");
-                    counter++;
-                    break;
-                case 1:
-                    System.out.println("Orien : See that button called 2? That allows you to defend. You will gain half of your defense when you press it, so it is very useful for defending. ");
-                    counter++;
-                    break;
-                case 2:
-                    System.out.println("Orien : Now, you can also equip a weapon during battle. Just press the button 3 and press the number by the item you want to equip. You have a pair of chopsticks right? Try it out! (BTW, this is the same for potions)");
-                    counter++;
-                    break;
-                case 3:
-                    System.out.println("Orien : Good job! The last thing I have to teach you is that after you beat people, you gain EXP and bible dollars. So to get stronger, beat up more people. Hehehe");
-                    counter++;
-                    break;
-            }
-            choiceMove(newPastor, monster);
+    public boolean Dorafight(MainCharacter newPastor, Monster monster, ParentVariable defeated) {
+        Scanner scanner = new Scanner(System.in);
+        boolean VL1 = false;
+        boolean VL2 = false;
+        boolean VL3 = false;
+        int monsterHealth = monster.getHealth();
+        while (newPastor.getHealth() > 0 && monster.getHealth() > 0) {
+            count++;
+            int totalHealth = monster.getTotalHealth();
             checkHealth(defeated, monster);
-            System.out.println("Its my turn now!");
-
+            choiceMove(newPastor, monster);
+            if (totalHealth < monsterHealth / 3 && !VL3) {
+                System.out.println(monster.getThirdVoiceLine());
+                VL3 = true;
+            } else if (totalHealth < monsterHealth * 2 / 3 && !VL2) {
+                System.out.println(monster.getSecondVoiceLine());
+                VL2 = true;
+            } else if (totalHealth < monsterHealth && !VL1) {
+                System.out.println(monster.getFirstVoiceLine());
+                VL1 = true;
+            }
+            DoraAttack(newPastor, monster, count);
             newPastor.setDefense(newPastor.getRealDefense());
             if (newPastor.getTotalHealth() <= 0) {
-                defeated.orienDefeated = false;
+                defeated.doraDefeated = false;
                 break;
             }
-            monsterBattle(newPastor, monster);
+
             printScores(newPastor, monster);
-            System.out.println();
         }
-        if (!defeated.orienDefeated) {
-            System.out.println("Orien : Wow, you really suc, don't you");
+        scanner.close();
+        if (!defeated.doraDefeated) {
+            System.out.println("Yeah... Im pretty strong");
         } else {
-            System.out.println("Gained 100 EXP");
-            newPastor.exp(100);
-            System.out.println("Orien : Nice job, You have the eyes of a legend");
+            System.out.println("Ok, well, i tried.");
+            System.out.println("Gained 50 EXP");
+            newPastor.exp(50);
         }
         return false;
     }
 
-    public void monsterBattle(MainCharacter newPastor, Monster mon) {
+    public void DoraAttack(MainCharacter newPastor, Monster mon, int count) {
         int totalDamage = mon.getDamage();
         Random rand = new Random();
         int x = rand.nextInt(100);
         if (x < mon.getCritChance()) {
             totalDamage = totalDamage * 3;
-            System.out.println("Wow, a crit");
         }
         totalDamage -= newPastor.getDefense();
         if (totalDamage <= 0) {
@@ -107,7 +103,7 @@ public class WeakOrienBattle implements BattleBase {
     @Override
     public void checkHealth(ParentVariable defeated, Monster monster) {
         if (monster.getTotalHealth() <= 0) {
-            defeated.orienDefeated = true;
+            defeated.doraDefeated = true;
         }
     }
 

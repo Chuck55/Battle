@@ -57,7 +57,7 @@ public class Bag {
     public void showPotions() {
         System.out.println("Name    Healing     Count");
         for (Potions key : consumableItems.keySet()) {
-            System.out.println(key.name + "     " + key.getHealing() + "    " + consumableItems.get(key));
+            System.out.println(key + " " + key.name + "     " + key.getHealing() + "    " + consumableItems.get(key));
         }
     }
 
