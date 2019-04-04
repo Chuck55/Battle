@@ -24,6 +24,7 @@ public class Bag {
     }
 
     public int obtainedWeapon(Weapons weapon) {
+        System.out.println("You just obtained a " + weapon.getName() + "!!!!");
         if (weaponItems.contains(weapon)) {
             return weapon.getAttackDamage();
         } else {
@@ -33,11 +34,13 @@ public class Bag {
     }
 
     public int obtainedKeyItem(KeyItem keyItem) {
+        System.out.println("You just obtained a " + keyItem.getName() + "!!!!");
         keyItems.add(keyItem);
         return 0;
     }
 
     public void obtainedPotion(Potions potion, int count) {
+        System.out.println("You just obtained a " + potion.getName() + "!!!!");
         if (consumableItems.get(potion) == null) {
             consumableItems.put(potion, count);
         } else {
@@ -49,7 +52,7 @@ public class Bag {
         System.out.println("  Name                    Attack Damage     AddedCrit");
         int x = 0;
         for (Weapons weaponItem : weaponItems) {
-            System.out.println(x + " " + weaponItem.name + "       " + weaponItem.getAttackDamage() + "             " + weaponItem.getAddedCrit());
+            System.out.println(x + " " + weaponItem.getName() + "       " + weaponItem.getAttackDamage() + "             " + weaponItem.getAddedCrit());
             x++;
         }
     }
@@ -57,7 +60,7 @@ public class Bag {
     public void showPotions() {
         System.out.println("Name    Healing     Count");
         for (Potions key : consumableItems.keySet()) {
-            System.out.println(key + " " + key.name + "     " + key.getHealing() + "    " + consumableItems.get(key));
+            System.out.println(key + " " + key.getName() + "     " + key.getHealing() + "    " + consumableItems.get(key));
         }
     }
 
