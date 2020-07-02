@@ -34,22 +34,19 @@ public class MartinBattle implements BattleBase {
         boolean VL1 = false;
         boolean VL2 = false;
         boolean VL3 = false;
-        int monsterHealth = monster.getHealth();
         while (newPastor.getHealth() > 0 && monster.getHealth() > 0) {
             count++;
             int totalHealth = monster.getTotalHealth();
-            checkHealth(defeated, monster);
             choiceMove(newPastor, monster);
-            if (totalHealth < monsterHealth / 3 && !VL3) {
-                System.out.println(monster.getThirdVoiceLine());
-                VL3 = true;
-            } else if (totalHealth < monsterHealth * 2 / 3 && !VL2) {
-                System.out.println(monster.getSecondVoiceLine());
-                VL2 = true;
-            } else if (totalHealth < monsterHealth && !VL1) {
-                System.out.println(monster.getFirstVoiceLine());
-                VL1 = true;
+            checkHealth(defeated, monster);
+            if(defeated.peterDefeated)
+            {
+                System.out.println("Gained 50 EXP");
+                newPastor.exp(50);
+                System.out.println("Oh, good job!");
+                return true;
             }
+            printVoiceline(VL1, VL2, VL3, totalHealth, monster);
             Random rand = new Random();
             if (rand.nextInt(100) < 50) {
                 System.out.println("Calvin pops out from behind and attacks as well");
@@ -68,11 +65,7 @@ public class MartinBattle implements BattleBase {
         }
         scanner.close();
         if (!defeated.martinDefeated) {
-            System.out.println("Monster");
-        } else {
-            System.out.println("Gained 50 EXP");
-            newPastor.exp(50);
-            System.out.println("oof");
+            System.out.println("HHAHAHHAHA");
         }
         return false;
     }
@@ -83,6 +76,7 @@ public class MartinBattle implements BattleBase {
         Random rand = new Random();
         int x = rand.nextInt(100);
         if (x < mon.getCritChance()) {
+            System.out.println("Martin : Yeah... Im good (hits a crit!)");
             totalDamage = totalDamage * 3;
         }
         totalDamage -= newPastor.getDefense();
@@ -148,7 +142,6 @@ public class MartinBattle implements BattleBase {
 
     @Override
     public void choiceMove(MainCharacter newPastor, Monster monster) {
-        Scanner newScanner = saveGame.getScanner();
         int choice = 5;
         while (choice > 4) {
             System.out.println("Press 1 to attack, 2 to defend, 3 to equip new Weapon, 4 to heal ");
@@ -165,13 +158,13 @@ public class MartinBattle implements BattleBase {
                 case 3:
                     newPastor.getBigBag().showWeapons();
                     //  newPastor.equipWeapon();
-                    int x = newScanner.nextInt();
-                    System.out.println("Equipped " + newPastor.getBigBag().getWeaponItems().get(x).name);
+                    int x = saveGame.getScanner().nextInt();
+                    System.out.println("Equipped " + newPastor.getBigBag().getWeaponItems().get(x).getName());
                     newPastor.equipWeapon(newPastor.getBigBag().getWeaponItems().get(x));
                     break;
                 case 4:
                     newPastor.getBigBag().showPotions();
-                    x = newScanner.nextInt();
+                    x = saveGame.getScanner().nextInt();
                     Map<Potions, Integer> potions = newPastor.getBigBag().getConsumableItems();
                     int count = 0;
                     for (Potions key : potions.keySet()) {

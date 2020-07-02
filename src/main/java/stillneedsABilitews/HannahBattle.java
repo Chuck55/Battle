@@ -24,22 +24,19 @@ public class HannahBattle implements BattleBase {
         boolean VL1 = false;
         boolean VL2 = false;
         boolean VL3 = false;
-        int monsterHealth = monster.getHealth();
         while (newPastor.getHealth() > 0 && monster.getHealth() > 0) {
             count++;
             int totalHealth = monster.getTotalHealth();
-            checkHealth(defeated, monster);
             choiceMove(newPastor, monster);
-            if (totalHealth < monsterHealth / 3 && !VL3) {
-                System.out.println(monster.getThirdVoiceLine());
-                VL3 = true;
-            } else if (totalHealth < monsterHealth * 2 / 3 && !VL2) {
-                System.out.println(monster.getSecondVoiceLine());
-                VL2 = true;
-            } else if (totalHealth < monsterHealth && !VL1) {
-                System.out.println(monster.getFirstVoiceLine());
-                VL1 = true;
+            checkHealth(defeated, monster);
+            if(defeated.aliceDefeated)
+            {
+                System.out.println("Alice : Well, That's awkward....");
+                System.out.println("Gained 50 EXP");
+                newPastor.exp(50);
+                return true;
             }
+            printVoiceline(VL1, VL2, VL3, totalHealth, monster);
             HannahAttack(newPastor, monster, count);
             newPastor.setDefense(newPastor.getRealDefense());
             if (newPastor.getTotalHealth() <= 0) {
@@ -52,10 +49,7 @@ public class HannahBattle implements BattleBase {
         scanner.close();
         if (!defeated.hannahDefeated) {
             System.out.println("Yeah... Im pretty strong");
-        } else {
-            System.out.println("Ok, well, i tried.");
-            System.out.println("Gained 50 EXP");
-            newPastor.exp(50);
+            System.out.println("Narrator : You were defeated");
         }
         return false;
     }
@@ -127,7 +121,7 @@ public class HannahBattle implements BattleBase {
                     newPastor.getBigBag().showWeapons();
                     //  newPastor.equipWeapon();
                     int x = newScanner.nextInt();
-                    System.out.println("Equipped " + newPastor.getBigBag().getWeaponItems().get(x).name);
+                    System.out.println("Equipped " + newPastor.getBigBag().getWeaponItems().get(x).getName());
                     newPastor.equipWeapon(newPastor.getBigBag().getWeaponItems().get(x));
                     break;
                 case 4:

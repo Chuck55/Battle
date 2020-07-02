@@ -4,10 +4,11 @@ public class Weapons extends Items {
    private int attackDamage;
    private int addedCrit;
 
-    public Weapons(String name, int damage, int addedCrit) {
-        this.name = name;
+    public Weapons(String name, int damage, int addedCrit){//} String description) {
+        this.setName(name);
         attackDamage = damage;
         this.addedCrit = addedCrit;
+        //this.description = description;
     }
 
     public int getAttackDamage() {

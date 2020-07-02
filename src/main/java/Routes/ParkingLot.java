@@ -1,10 +1,10 @@
 package Routes;
-
 import com.rpg.MainCharacter;
 import com.rpg.ParentVariable;
 import com.rpg.SaveGame;
 
 import java.io.FileNotFoundException;
+import java.io.IOException;
 
 public class ParkingLot implements BaseRoute {
 
@@ -22,41 +22,36 @@ public class ParkingLot implements BaseRoute {
     }
 
     @Override
-    public void activities(MainCharacter newPastor, ParentVariable defeated) throws FileNotFoundException {
+    public void activities(MainCharacter newPastor, ParentVariable defeated) throws IOException {
         SaveGame saveGame = new SaveGame();
         Entrance entrance = new Entrance();
-        boolean correct;
-        String choice;
+        String choice = "   ";
         do {
             printLocation(defeated);
-            choice = saveGame.getScanner().nextLine();
+            if(saveGame.getScanner().hasNextLine()) {
+                choice = saveGame.getScanner().nextLine();
+            }
             System.out.println(choice);
             switch (choice) {
                 case "person":
-                    correct = true;
                     break;
                 case "left":
-                    correct = false;
                     System.out.println("Not a valid entry, Please reenter");
                     break;
                 case "right":
-                    correct = false;
                     System.out.println("Not a valid entry, Please reenter");
                     break;
                 case "forward":
-                    correct = true;
                     entrance.activities(newPastor, defeated);
                     break;
                 case "behind":
-                    correct = false;
                     System.out.println("Not a valid entry, Please reenter");
                     break;
                 case "save":
-                    saveGame.print(newPastor);
+                    saveGame.print(newPastor, defeated);
                 default:
-                    correct = false;
                     System.out.println("Not a valid entry, Please reenter");
             }
-        } while (!correct);
+        } while (true);
     }
 }

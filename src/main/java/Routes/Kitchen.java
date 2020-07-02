@@ -6,7 +6,7 @@ import com.rpg.MainCharacter;
 import com.rpg.ParentVariable;
 import com.rpg.SaveGame;
 
-import java.io.FileNotFoundException;
+import java.io.IOException;
 
 public class Kitchen implements BaseRoute {
 
@@ -25,48 +25,43 @@ public class Kitchen implements BaseRoute {
     }
 
     @Override
-    public void activities(MainCharacter newPastor, ParentVariable defeated) throws FileNotFoundException {
+    public void activities(MainCharacter newPastor, ParentVariable defeated) throws IOException {
         QBattle qBattle = new QBattle();
         LowTier lowTier = new LowTier();
-        boolean correct;
         BallRoom ballRoom = new BallRoom();
         SaveGame saveGame = new SaveGame();
         Entrance entrance = new Entrance();
-        String choice;
+        String choice = "";
         do {
             printLocation(defeated);
-            choice = saveGame.getScanner().nextLine();
+            if(saveGame.getScanner().hasNextLine()) {
+                choice = saveGame.getScanner().nextLine();
+            }
             System.out.println(choice);
             switch (choice) {
                 case "person":
-                    correct = true;
                     if (defeated.noOneDefeated) {
-                        qBattle.QFight(newPastor, lowTier.Q, defeated);
+                        qBattle.QFight(newPastor, lowTier.getQ(), defeated);
                     } //else if (defeated.martinDefeated) {
                     //} else if (defeated.kevinDefeated) {
                     break;
                 case "left":
-                    correct = false;
                     System.out.println("Not a valid entry, Please reenter");
                     break;
                 case "right":
-                    correct = true;
                     entrance.activities(newPastor, defeated);
                     break;
                 case "forward":
-                    correct = true;
                     ballRoom.activities(newPastor, defeated);
                     break;
                 case "behind":
-                    correct = false;
                     System.out.println("Not a valid entry, Please reenter");
                     break;
                 case "save":
-                    saveGame.print(newPastor);
+                    saveGame.print(newPastor, defeated);
                 default:
-                    correct = false;
                     System.out.println("Not a valid entry, Please reenter");
             }
-        } while (!correct);
+        } while (true);
     }
 }

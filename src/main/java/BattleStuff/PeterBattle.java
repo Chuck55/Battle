@@ -1,4 +1,5 @@
-package stillneedsABilitews;
+package BattleStuff;
+// 5th turn, Peter will have a guarenteed crit
 
 import BattleStuff.BattleBase;
 import com.rpg.MainCharacter;
@@ -11,15 +12,15 @@ import java.util.Map;
 import java.util.Random;
 import java.util.Scanner;
 
-public class AliceBattle implements BattleBase {
+public class PeterBattle implements BattleBase {
     private SaveGame saveGame;
     int count = 0;
 
-    public AliceBattle() {
+    public PeterBattle() {
         saveGame = new SaveGame();
     }
 
-    public boolean Alicefight(MainCharacter newPastor, Monster monster, ParentVariable defeated) {
+    public boolean Peterfight(MainCharacter newPastor, Monster monster, ParentVariable defeated) {
         Scanner scanner = new Scanner(System.in);
         boolean VL1 = false;
         boolean VL2 = false;
@@ -28,8 +29,16 @@ public class AliceBattle implements BattleBase {
         while (newPastor.getHealth() > 0 && monster.getHealth() > 0) {
             count++;
             int totalHealth = monster.getTotalHealth();
-            checkHealth(defeated, monster);
             choiceMove(newPastor, monster);
+            checkHealth(defeated, monster);
+            if(defeated.peterDefeated)
+            {
+                System.out.println("Gained 50 EXP");
+                newPastor.exp(50);
+                System.out.println("");
+                return true;
+
+            }
             if (totalHealth < monsterHealth / 3 && !VL3) {
                 System.out.println(monster.getThirdVoiceLine());
                 VL3 = true;
@@ -40,31 +49,35 @@ public class AliceBattle implements BattleBase {
                 System.out.println(monster.getFirstVoiceLine());
                 VL1 = true;
             }
-            AliceAttack(newPastor, monster, count);
+            PeterAttack(newPastor, monster, count);
             newPastor.setDefense(newPastor.getRealDefense());
             if (newPastor.getTotalHealth() <= 0) {
-                defeated.aliceDefeated = false;
+                defeated.peterDefeated = false;
                 break;
             }
-
+            checkHealth(defeated, monster);
             printScores(newPastor, monster);
         }
         scanner.close();
-        if (!defeated.aliceDefeated) {
-            System.out.println("Yeah... Im pretty strong");
-        } else {
-            System.out.println("Ok, well, i tried.");
-            System.out.println("Gained 50 EXP");
-            newPastor.exp(50);
+        if (!defeated.peterDefeated) {
+            System.out.println("Yeet, you out fam");
+            System.out.println("Narrator : You were defeated");
         }
         return false;
     }
 
-    public void AliceAttack(MainCharacter newPastor, Monster mon, int count) {
+    public void PeterAttack(MainCharacter newPastor, Monster mon, int count) {
         int totalDamage = mon.getDamage();
         Random rand = new Random();
         int x = rand.nextInt(100);
-        if (x < mon.getCritChance()) {
+        if (count == 5 || x < mon.getCritChance()) {
+            if (count == 5) {
+                System.out.println("Peter is suddenly getting a bit rowdy! Guaranteed crit!");
+            } else {
+                System.out.println("The opponent crit!");
+
+            }
+            System.out.println("The opponent crit!");
             totalDamage = totalDamage * 3;
         }
         totalDamage -= newPastor.getDefense();
@@ -103,13 +116,12 @@ public class AliceBattle implements BattleBase {
     @Override
     public void checkHealth(ParentVariable defeated, Monster monster) {
         if (monster.getTotalHealth() <= 0) {
-            defeated.aliceDefeated = true;
+            defeated.peterDefeated = true;
         }
     }
 
     @Override
     public void choiceMove(MainCharacter newPastor, Monster monster) {
-        Scanner newScanner = saveGame.getScanner();
         int choice = 5;
         while (choice > 4) {
             System.out.println("Press 1 to attack, 2 to defend, 3 to equip new Weapon, 4 to heal ");
@@ -126,13 +138,13 @@ public class AliceBattle implements BattleBase {
                 case 3:
                     newPastor.getBigBag().showWeapons();
                     //  newPastor.equipWeapon();
-                    int x = newScanner.nextInt();
-                    System.out.println("Equipped " + newPastor.getBigBag().getWeaponItems().get(x).name);
+                    int x = saveGame.getScanner().nextInt();
+                    System.out.println("Equipped " + newPastor.getBigBag().getWeaponItems().get(x).getName());
                     newPastor.equipWeapon(newPastor.getBigBag().getWeaponItems().get(x));
                     break;
                 case 4:
                     newPastor.getBigBag().showPotions();
-                    x = newScanner.nextInt();
+                    x = saveGame.getScanner().nextInt();
                     Map<Potions, Integer> potions = newPastor.getBigBag().getConsumableItems();
                     int count = 0;
                     for (Potions key : potions.keySet()) {

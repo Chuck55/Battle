@@ -1,20 +1,20 @@
 package Characters;
 
 import com.rpg.Monster;
+import utility.ItemClass;
 import utility.Potions;
 import utility.Weapons;
-
 public class LowTier {
-   // Lower Minions
+    ItemClass itemClass = new ItemClass();
+    // Lower Minions
 
     //Brit    75         9          5            4
     //Wendy   60         8          12           3
     //Q       70         7          7            5
     //Jay     60         9          12           2
     //Jessica 80         10         7            6
-    private Potions normalPotion = new Potions("normal Potion", 20);
-    private Potions middlePotion = new Potions("Middle Potion", 30);
-    Monster Wendy = new Monster
+
+    private Monster Wendy = new Monster
             (
                     "Wendy",
                     150,
@@ -24,9 +24,9 @@ public class LowTier {
                     "What do you mean??",
                     "Oof",
                     "Oops",
-                    normalPotion
+                    itemClass.getMiddlePotion()
             );
-    Monster Brittany = new Monster
+    private Monster Brittany = new Monster
             (
                     "Brittany",
                     75,
@@ -36,9 +36,21 @@ public class LowTier {
                     "",
                     "",
                     "",
-                    middlePotion
+                    itemClass.getMiddlePotion()
             );
-    Monster Jessica = new Monster
+    private Monster Calvin = new Monster
+            (
+                    "Calvin",
+                    75,
+                    9,
+                    5,
+                    4,
+                    "",
+                    "",
+                    "",
+                    itemClass.getMiddlePotion()
+            );
+    private Monster Jessica = new Monster
             (
                     "Jessica",
                     80,
@@ -48,9 +60,9 @@ public class LowTier {
                     "",
                     "",
                     "",
-                    middlePotion
+                    itemClass.getMiddlePotion()
             );
-    public Monster Q = new Monster
+    private Monster Q = new Monster
             (
                     "Q",
                     70,
@@ -60,9 +72,9 @@ public class LowTier {
                     "",
                     "",
                     "",
-                    middlePotion
+                    itemClass.getMiddlePotion()
             );
-    Monster Jay = new Monster
+    private Monster Jay = new Monster
             (
                     "Brittany",
                     60,
@@ -72,7 +84,30 @@ public class LowTier {
                     "",
                     "",
                     "",
-                    middlePotion
+                    itemClass.getMiddlePotion()
             );
 
+    public Monster getWendy() {
+        return Wendy;
+    }
+
+    public Monster getBrittany() {
+        return Brittany;
+    }
+
+    public Monster getCalvin() {
+        return Calvin;
+    }
+
+    public Monster getJessica() {
+        return Jessica;
+    }
+
+    public Monster getQ() {
+        return Q;
+    }
+
+    public Monster getJay() {
+        return Jay;
+    }
 }

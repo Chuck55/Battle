@@ -16,7 +16,7 @@ public class MainCharacter {
     private int exp;
     private int attackDamage;
     private int critChance;
-
+    private int gold;
     public MainCharacter(String name) {
         this.name = name;
         equippedWeapon = null;
@@ -29,6 +29,7 @@ public class MainCharacter {
         defense = 3;
         attackDamage = 10;
         critChance = 5;
+        gold = 200;
     }
 
     public void levelUp() {
@@ -91,6 +92,14 @@ public class MainCharacter {
 
     public void setTotalHealth(int totalHealth) {
         this.totalHealth = totalHealth;
+    }
+
+    public int getGold() {
+        return gold;
+    }
+
+    public void setGold(int gold) {
+        this.gold = gold;
     }
 
     public String getName() {

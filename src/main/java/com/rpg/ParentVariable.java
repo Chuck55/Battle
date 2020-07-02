@@ -37,4 +37,7 @@ public class ParentVariable {
     public boolean doreenDefeated;
     public boolean shinzeDefeated;
     public boolean bshawnDefeated;
+    public boolean talkedWithMartin = false;
+    public boolean calvinDefeated;
+    public boolean talkedWithJohn;
 }

@@ -24,22 +24,19 @@ public class JasonBattle implements BattleBase {
         boolean VL1 = false;
         boolean VL2 = false;
         boolean VL3 = false;
-        int monsterHealth = monster.getHealth();
         while (newPastor.getHealth() > 0 && monster.getHealth() > 0) {
             count++;
             int totalHealth = monster.getTotalHealth();
-            checkHealth(defeated, monster);
             choiceMove(newPastor, monster);
-            if (totalHealth < monsterHealth / 3 && !VL3) {
-                System.out.println(monster.getThirdVoiceLine());
-                VL3 = true;
-            } else if (totalHealth < monsterHealth * 2 / 3 && !VL2) {
-                System.out.println(monster.getSecondVoiceLine());
-                VL2 = true;
-            } else if (totalHealth < monsterHealth && !VL1) {
-                System.out.println(monster.getFirstVoiceLine());
-                VL1 = true;
+            checkHealth(defeated, monster);
+            if(defeated.jasonDefeated)
+            {
+                System.out.println("Gained 50 EXP");
+                newPastor.exp(50);
+                System.out.println("Jason : oh......");
+                return true;
             }
+            printVoiceline(VL1, VL2, VL3, totalHealth, monster);
             JasonAttack(newPastor, monster, count);
             newPastor.setDefense(newPastor.getRealDefense());
             if (newPastor.getTotalHealth() <= 0) {
@@ -51,11 +48,7 @@ public class JasonBattle implements BattleBase {
         }
         scanner.close();
         if (!defeated.jasonDefeated) {
-            System.out.println("Epic victory royale, hehehehe");
-        } else {
-            System.out.println("oh......");
-            System.out.println("Gained 50 EXP");
-            newPastor.exp(50);
+            System.out.println("Jason : Epic victory royale, hehehehe");
         }
         return false;
     }
@@ -65,6 +58,7 @@ public class JasonBattle implements BattleBase {
         Random rand = new Random();
         int x = rand.nextInt(100);
         if (x < mon.getCritChance()) {
+            System.out.println("Jason : That epic battle royale! (hits a crit!)");
             totalDamage = totalDamage * 3;
         }
         totalDamage -= newPastor.getDefense();
@@ -109,7 +103,6 @@ public class JasonBattle implements BattleBase {
 
     @Override
     public void choiceMove(MainCharacter newPastor, Monster monster) {
-        Scanner newScanner = saveGame.getScanner();
         int choice = 5;
         while (choice > 4) {
             System.out.println("Press 1 to attack, 2 to defend, 3 to equip new Weapon, 4 to heal ");
@@ -126,13 +119,13 @@ public class JasonBattle implements BattleBase {
                 case 3:
                     newPastor.getBigBag().showWeapons();
                     //  newPastor.equipWeapon();
-                    int x = newScanner.nextInt();
-                    System.out.println("Equipped " + newPastor.getBigBag().getWeaponItems().get(x).name);
+                    int x = saveGame.getScanner().nextInt();
+                    System.out.println("Equipped " + newPastor.getBigBag().getWeaponItems().get(x).getName());
                     newPastor.equipWeapon(newPastor.getBigBag().getWeaponItems().get(x));
                     break;
                 case 4:
                     newPastor.getBigBag().showPotions();
-                    x = newScanner.nextInt();
+                    x = saveGame.getScanner().nextInt();
                     Map<Potions, Integer> potions = newPastor.getBigBag().getConsumableItems();
                     int count = 0;
                     for (Potions key : potions.keySet()) {

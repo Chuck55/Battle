@@ -25,37 +25,28 @@ public class LinusBattle implements BattleBase {
         int monsterHealth = monster.getHealth();
         while (newPastor.getHealth() > 0 && monster.getHealth() > 0) {
             int totalHealth = monster.getTotalHealth();
-            checkHealth(defeated, monster);
             choiceMove(newPastor, monster);
-            if (totalHealth < monsterHealth / 3 && !VL3) {
-                System.out.println(monster.getThirdVoiceLine());
-                System.out.println("Linus looked at his phone, and recovered half of his hp");
-                monster.setTotalHealth(monster.getHealth() / 2);
-                VL3 = true;
-            } else if (totalHealth < monsterHealth * 2 / 3 && !VL2) {
-                System.out.println(monster.getSecondVoiceLine());
-                VL2 = true;
-            } else if (totalHealth < monsterHealth && !VL1) {
-                System.out.println(monster.getFirstVoiceLine());
-                VL1 = true;
+            checkHealth(defeated, monster);
+            if(defeated.linusDefeated)
+            {
+                System.out.println("Linus : Yes, I assure you, losing was all part of my master plan.....");
+                System.out.println("Gained 50 EXP");
+                newPastor.exp(50);
+                return true;
             }
+            printVoiceline(VL1, VL2, VL3, totalHealth, monster);
             LinusAttack(newPastor, monster);
             newPastor.setDefense(newPastor.getRealDefense());
             if (newPastor.getTotalHealth() <= 0) {
                 defeated.linusDefeated = false;
                 break;
             }
-
             printScores(newPastor, monster);
         }
         scanner.close();
         if (!defeated.linusDefeated) {
-            System.out.println("HAHAHAHAHA, I TOLD YOU I REIGN SUPREME!");
-        } else {
-            System.out.println("Yes, I assure you, losing was all part of my master plan.....");
-            System.out.println("Gained 50 EXP");
-            newPastor.exp(50);
-            System.out.println("oof");
+            System.out.println("Linus : HAHAHAHAHA, I TOLD YOU I REIGN SUPREME!");
+            System.out.println("Narrator : You were defeated");
         }
         return false;
     }
@@ -65,6 +56,7 @@ public class LinusBattle implements BattleBase {
         Random rand = new Random();
         int x = rand.nextInt(100);
         if (x < mon.getCritChance()) {
+            System.out.println("Linus : My power unleashed! (hits a crit!)");
             totalDamage = totalDamage * 3;
         }
         totalDamage -= newPastor.getDefense();
@@ -118,7 +110,6 @@ public class LinusBattle implements BattleBase {
 
     @Override
     public void choiceMove(MainCharacter newPastor, Monster monster) {
-        Scanner newScanner = saveGame.getScanner();
         int choice = 5;
         while (choice > 4) {
             System.out.println("Press 1 to attack, 2 to defend, 3 to equip new Weapon, 4 to heal ");
@@ -135,13 +126,13 @@ public class LinusBattle implements BattleBase {
                 case 3:
                     newPastor.getBigBag().showWeapons();
                     //  newPastor.equipWeapon();
-                    int x = newScanner.nextInt();
-                    System.out.println("Equipped " + newPastor.getBigBag().getWeaponItems().get(x).name);
+                    int x = saveGame.getScanner().nextInt();
+                    System.out.println("Equipped " + newPastor.getBigBag().getWeaponItems().get(x).getName());
                     newPastor.equipWeapon(newPastor.getBigBag().getWeaponItems().get(x));
                     break;
                 case 4:
                     newPastor.getBigBag().showPotions();
-                    x = newScanner.nextInt();
+                    x = saveGame.getScanner().nextInt();
                     Map<Potions, Integer> potions = newPastor.getBigBag().getConsumableItems();
                     int count = 0;
                     for (Potions key : potions.keySet()) {

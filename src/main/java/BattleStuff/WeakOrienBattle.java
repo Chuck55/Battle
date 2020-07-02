@@ -42,6 +42,14 @@ public class WeakOrienBattle implements BattleBase {
             }
             choiceMove(newPastor, monster);
             checkHealth(defeated, monster);
+            if(defeated.orienDefeated)
+            {
+                System.out.println("Orien : Nice job, You have the eyes of a legend");
+                System.out.println("Gained 50 EXP");
+                newPastor.exp(50);
+                return true;
+
+            }
             System.out.println("Its my turn now!");
 
             newPastor.setDefense(newPastor.getRealDefense());
@@ -55,10 +63,7 @@ public class WeakOrienBattle implements BattleBase {
         }
         if (!defeated.orienDefeated) {
             System.out.println("Orien : Wow, you really suc, don't you");
-        } else {
-            System.out.println("Gained 100 EXP");
-            newPastor.exp(100);
-            System.out.println("Orien : Nice job, You have the eyes of a legend");
+            System.out.println("Narrator : You were defeated");
         }
         return false;
     }
@@ -68,8 +73,8 @@ public class WeakOrienBattle implements BattleBase {
         Random rand = new Random();
         int x = rand.nextInt(100);
         if (x < mon.getCritChance()) {
+            System.out.println("The opponent crit!");
             totalDamage = totalDamage * 3;
-            System.out.println("Wow, a crit");
         }
         totalDamage -= newPastor.getDefense();
         if (totalDamage <= 0) {
@@ -113,7 +118,6 @@ public class WeakOrienBattle implements BattleBase {
 
     @Override
     public void choiceMove(MainCharacter newPastor, Monster monster) {
-        Scanner newScanner = saveGame.getScanner();
         int choice = 5;
         while (choice > 4) {
             System.out.println("Press 1 to attack, 2 to defend, 3 to equip new Weapon, 4 to heal ");
@@ -130,13 +134,13 @@ public class WeakOrienBattle implements BattleBase {
                 case 3:
                     newPastor.getBigBag().showWeapons();
                     //  newPastor.equipWeapon();
-                    int x = newScanner.nextInt();
-                    System.out.println("Equipped " + newPastor.getBigBag().getWeaponItems().get(x).name);
+                    int x = saveGame.getScanner().nextInt();
+                    System.out.println("Equipped " + newPastor.getBigBag().getWeaponItems().get(x).getName());
                     newPastor.equipWeapon(newPastor.getBigBag().getWeaponItems().get(x));
                     break;
                 case 4:
                     newPastor.getBigBag().showPotions();
-                    x = newScanner.nextInt();
+                    x = saveGame.getScanner().nextInt();
                     Map<Potions, Integer> potions = newPastor.getBigBag().getConsumableItems();
                     int count = 0;
                     for (Potions key : potions.keySet()) {

@@ -1,7 +1,45 @@
-{normal Potion} 20 5
 Weapons
-{Pair of Chopsticks} 10 0
 Stats
-33 0 2 0 6 12
+30 30 1 0 3 10
 KeyItems
 {Mysterious Key} 
+
+Defeated
+true
+false
+false
+false
+false
+false
+false
+false
+false
+false
+false
+false
+false
+false
+false
+false
+false
+false
+false
+false
+false
+false
+false
+false
+false
+false
+false
+false
+false
+false
+false
+false
+false
+false
+false
+false
+false
+false

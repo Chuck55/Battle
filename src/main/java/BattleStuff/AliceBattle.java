@@ -1,5 +1,5 @@
-package stillneedsABilitews;
-
+package BattleStuff;
+//Crit is *5 instead of *3, crit chance is higher
 import BattleStuff.BattleBase;
 import com.rpg.MainCharacter;
 import com.rpg.Monster;
@@ -11,61 +11,57 @@ import java.util.Map;
 import java.util.Random;
 import java.util.Scanner;
 
-public class AndyBattle implements BattleBase {
+public class AliceBattle implements BattleBase {
     private SaveGame saveGame;
     int count = 0;
 
-    public AndyBattle() {
+    public AliceBattle() {
         saveGame = new SaveGame();
     }
 
-    public boolean Andyfight(MainCharacter newPastor, Monster monster, ParentVariable defeated) {
+    public boolean Alicefight(MainCharacter newPastor, Monster monster, ParentVariable defeated) {
         Scanner scanner = new Scanner(System.in);
         boolean VL1 = false;
         boolean VL2 = false;
         boolean VL3 = false;
-        int monsterHealth = monster.getHealth();
         while (newPastor.getHealth() > 0 && monster.getHealth() > 0) {
             count++;
             int totalHealth = monster.getTotalHealth();
-            checkHealth(defeated, monster);
             choiceMove(newPastor, monster);
-            if (totalHealth < monsterHealth / 3 && !VL3) {
-                System.out.println(monster.getThirdVoiceLine());
-                VL3 = true;
-            } else if (totalHealth < monsterHealth * 2 / 3 && !VL2) {
-                System.out.println(monster.getSecondVoiceLine());
-                VL2 = true;
-            } else if (totalHealth < monsterHealth && !VL1) {
-                System.out.println(monster.getFirstVoiceLine());
-                VL1 = true;
+            checkHealth(defeated, monster);
+            if(defeated.aliceDefeated)
+            {
+                System.out.println("Alice : Well, That's awkward....");
+                System.out.println("Gained 50 EXP");
+                newPastor.exp(50);
+                return true;
             }
-            AndyAttack(newPastor, monster, count);
+            printVoiceline(VL1, VL2, VL3, totalHealth, monster);
+            AliceAttack(newPastor, monster, count);
             newPastor.setDefense(newPastor.getRealDefense());
             if (newPastor.getTotalHealth() <= 0) {
-                defeated.andyDefeated = false;
+                defeated.aliceDefeated = false;
                 break;
             }
 
             printScores(newPastor, monster);
         }
         scanner.close();
-        if (!defeated.andyDefeated) {
-            System.out.println("Yeah... Im pretty strong");
-        } else {
-            System.out.println("Ok, well, i tried.");
-            System.out.println("Gained 50 EXP");
-            newPastor.exp(50);
+        if (!defeated.aliceDefeated) {
+            System.out.println("Alice : oh! ok, I didn't expect that.");
+            System.out.println("Narrator : You were defeated");
         }
         return false;
     }
 
-    public void AndyAttack(MainCharacter newPastor, Monster mon, int count) {
+    public void AliceAttack(MainCharacter newPastor, Monster mon, int count) {
         int totalDamage = mon.getDamage();
         Random rand = new Random();
         int x = rand.nextInt(100);
         if (x < mon.getCritChance()) {
-            totalDamage = totalDamage * 3;
+            //System.out.println("Alice Crit for more than normal!");
+            System.out.println("Alice : Nice! A crit! (hits a crit!)");
+            totalDamage = totalDamage * 5;
         }
         totalDamage -= newPastor.getDefense();
         if (totalDamage <= 0) {
@@ -103,13 +99,12 @@ public class AndyBattle implements BattleBase {
     @Override
     public void checkHealth(ParentVariable defeated, Monster monster) {
         if (monster.getTotalHealth() <= 0) {
-            defeated.andyDefeated = true;
+            defeated.aliceDefeated = true;
         }
     }
 
     @Override
     public void choiceMove(MainCharacter newPastor, Monster monster) {
-        Scanner newScanner = saveGame.getScanner();
         int choice = 5;
         while (choice > 4) {
             System.out.println("Press 1 to attack, 2 to defend, 3 to equip new Weapon, 4 to heal ");
@@ -126,13 +121,13 @@ public class AndyBattle implements BattleBase {
                 case 3:
                     newPastor.getBigBag().showWeapons();
                     //  newPastor.equipWeapon();
-                    int x = newScanner.nextInt();
-                    System.out.println("Equipped " + newPastor.getBigBag().getWeaponItems().get(x).name);
+                    int x = saveGame.getScanner().nextInt();
+                    System.out.println("Equipped " + newPastor.getBigBag().getWeaponItems().get(x).getName());
                     newPastor.equipWeapon(newPastor.getBigBag().getWeaponItems().get(x));
                     break;
                 case 4:
                     newPastor.getBigBag().showPotions();
-                    x = newScanner.nextInt();
+                    x = saveGame.getScanner().nextInt();
                     Map<Potions, Integer> potions = newPastor.getBigBag().getConsumableItems();
                     int count = 0;
                     for (Potions key : potions.keySet()) {

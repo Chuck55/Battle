@@ -1,6 +1,5 @@
-package stillneedsABilitews;
+package BattleStuff;
 
-import BattleStuff.BattleBase;
 import com.rpg.MainCharacter;
 import com.rpg.Monster;
 import com.rpg.ParentVariable;
@@ -11,15 +10,10 @@ import java.util.Map;
 import java.util.Random;
 import java.util.Scanner;
 
-public class JessicaBattle implements BattleBase {
+public class CalvinBattle implements BattleBase{
         private SaveGame saveGame;
         int count = 0;
-
-        public JessicaBattle() {
-            saveGame = new SaveGame();
-        }
-
-        public boolean Jessicafight(MainCharacter newPastor, Monster monster, ParentVariable defeated) {
+        public boolean Calvinfight(MainCharacter newPastor, Monster monster, ParentVariable defeated) {
             Scanner scanner = new Scanner(System.in);
             boolean VL1 = false;
             boolean VL2 = false;
@@ -29,36 +23,46 @@ public class JessicaBattle implements BattleBase {
                 int totalHealth = monster.getTotalHealth();
                 choiceMove(newPastor, monster);
                 checkHealth(defeated, monster);
-                if(defeated.jessicaDefeated)
+                if(defeated.calvinDefeated)
                 {
-                    System.out.println("Alice : Well, That's awkward....");
+                    System.out.println("Daniel: Dang..... I Guess i'm not strong enough.....");
                     System.out.println("Gained 50 EXP");
                     newPastor.exp(50);
                     return true;
                 }
                 printVoiceline(VL1, VL2, VL3, totalHealth, monster);
-                JessicaAttack(newPastor, monster);
+                CalvinAttack(newPastor, monster);
                 newPastor.setDefense(newPastor.getRealDefense());
                 if (newPastor.getTotalHealth() <= 0) {
-                    defeated.jessicaDefeated = false;
+                    defeated.calvinDefeated = false;
                     break;
                 }
 
                 printScores(newPastor, monster);
             }
             scanner.close();
-            if (!defeated.jessicaDefeated) {
-                System.out.println("Yeah... Im pretty strong");
-                System.out.println("Narrator : You were defeated");
+            if (!defeated.calvinDefeated) {
+                System.out.println("Brittany : ummm");
+            } else {
+                System.out.println("Brittany : Well, i lost");
+                System.out.println("Gained 50 EXP");
+                newPastor.exp(50);
             }
             return false;
         }
 
-        public void JessicaAttack(MainCharacter newPastor, Monster mon) {
+        public void CalvinAttack(MainCharacter newPastor, Monster mon) {
             int totalDamage = mon.getDamage();
+            int crit = mon.getCritChance();
             Random rand = new Random();
             int x = rand.nextInt(100);
-            if (x < mon.getCritChance()) {
+            if (x < 50) {
+                System.out.println("Brittany : Analyzing now....");
+                crit *= 2;
+            }
+
+            if (x < crit) {
+                System.out.println("Brittany : Looks like I crit!");
                 totalDamage = totalDamage * 3;
             }
             totalDamage -= newPastor.getDefense();
@@ -97,7 +101,7 @@ public class JessicaBattle implements BattleBase {
         @Override
         public void checkHealth(ParentVariable defeated, Monster monster) {
             if (monster.getTotalHealth() <= 0) {
-                defeated.jessicaDefeated = true;
+                defeated.brittanyDefeated = true;
             }
         }
 

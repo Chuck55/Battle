@@ -4,7 +4,9 @@ import com.rpg.MainCharacter;
 import com.rpg.Monster;
 import com.rpg.ParentVariable;
 import com.rpg.SaveGame;
+import utility.Potions;
 
+import java.util.Map;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -25,18 +27,16 @@ public class GabeBattle implements BattleBase {
         while (newPastor.getHealth() > 0 && monster.getHealth() > 0) {
             count++;
             int totalHealth = monster.getTotalHealth();
-            checkHealth(defeated, monster);
             choiceMove(newPastor, monster);
-            if (totalHealth < monsterHealth / 3 && !VL3) {
-                System.out.println(monster.getThirdVoiceLine());
-                VL3 = true;
-            } else if (totalHealth < monsterHealth * 2 / 3 && !VL2) {
-                System.out.println(monster.getSecondVoiceLine());
-                VL2 = true;
-            } else if (totalHealth < monsterHealth && !VL1) {
-                System.out.println(monster.getFirstVoiceLine());
-                VL1 = true;
+            checkHealth(defeated, monster);
+            if(defeated.gabeDefeated)
+            {
+                System.out.println("Gained 50 EXP");
+                newPastor.exp(50);
+                System.out.println("Gabe : oof");
+                return true;
             }
+            printVoiceline(VL1, VL2, VL3, totalHealth, monster);
             GabeAttack(newPastor, monster);
             newPastor.setDefense(newPastor.getRealDefense());
             if (newPastor.getTotalHealth() <= 0) {
@@ -48,11 +48,7 @@ public class GabeBattle implements BattleBase {
         }
         scanner.close();
         if (!defeated.gabeDefeated) {
-            System.out.println("Monster");
-        } else {
-            System.out.println("Gained 50 EXP");
-            newPastor.exp(50);
-            System.out.println("oof");
+            System.out.println("Gabe : Im sO StRoNg");
         }
         return false;
     }
@@ -63,6 +59,7 @@ public class GabeBattle implements BattleBase {
         Random rand = new Random();
         int x = rand.nextInt(100);
         if (x < mon.getCritChance()) {
+            System.out.println("Gabe : Heh (hits a crit!)");
             totalDamage = totalDamage * 3 ;
         }
         totalDamage-= newPastor.getDefense();
@@ -117,7 +114,6 @@ public class GabeBattle implements BattleBase {
 
     @Override
     public void choiceMove(MainCharacter newPastor, Monster monster) {
-        Scanner newScanner = saveGame.getScanner();
         int choice = 5;
         while (choice > 4) {
             System.out.println("Press 1 to attack, 2 to defend, 3 to equip new Weapon, 4 to heal ");
@@ -134,12 +130,31 @@ public class GabeBattle implements BattleBase {
                 case 3:
                     newPastor.getBigBag().showWeapons();
                     //  newPastor.equipWeapon();
-                    int x = newScanner.nextInt();
-                    System.out.println("Equipped " + newPastor.getBigBag().getWeaponItems().get(x).name);
+                    int x = saveGame.getScanner().nextInt();
+                    System.out.println("Equipped " + newPastor.getBigBag().getWeaponItems().get(x).getName());
                     newPastor.equipWeapon(newPastor.getBigBag().getWeaponItems().get(x));
                     break;
                 case 4:
                     newPastor.getBigBag().showPotions();
+                    x = saveGame.getScanner().nextInt();
+                    Map<Potions, Integer> potions = newPastor.getBigBag().getConsumableItems();
+                    int count = 0;
+                    for (Potions key : potions.keySet()) {
+                        if (count == x && potions.get(key) > 0) {
+                            newPastor.setTotalHealth(key.getHealing() + newPastor.getTotalHealth());
+                            System.out.println("You recovered " + key.getHealing() + " Points of health");
+                            if (newPastor.getTotalHealth() > newPastor.getHealth()) {
+                                newPastor.setTotalHealth(newPastor.getHealth());
+                            }
+                            potions.put(key, potions.get(key) - 1);
+                            if (potions.get(key) <= 0) {
+                                potions.remove(key);
+                            }
+                            break;
+                        } else {
+                            count++;
+                        }
+                    }
                     break;
                 default:
                     System.out.println("Please enter a viable option");
@@ -162,7 +177,7 @@ public class GabeBattle implements BattleBase {
         }
         if (count % 3 == 0) {
             System.out.println("Gabe nullified attack! Recovered " + totalDamage + "Health points");
-            mon.setTotalHealth(mon.getTotalHealth() + totalDamage);
+            mon.setTotalHealth(mon.getTotalHealth() + newPastor.getAttackDamage());
         } else {
             System.out.println("You did " + totalDamage + " points of Damage");
             mon.setTotalHealth(mon.getTotalHealth() - totalDamage);

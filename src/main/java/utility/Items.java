@@ -1,5 +1,14 @@
 package utility;
 
 public class Items {
-    public String name;
+    private String name;
+    private String description;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 }

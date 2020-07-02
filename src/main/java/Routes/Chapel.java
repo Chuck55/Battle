@@ -5,6 +5,7 @@ import com.rpg.ParentVariable;
 import com.rpg.SaveGame;
 
 import java.io.FileNotFoundException;
+import java.io.IOException;
 
 public class Chapel implements BaseRoute {
     @Override
@@ -21,42 +22,37 @@ public class Chapel implements BaseRoute {
     }
 
     @Override
-    public void activities(MainCharacter newPastor, ParentVariable defeated) throws FileNotFoundException {
+    public void activities(MainCharacter newPastor, ParentVariable defeated) throws IOException {
         SaveGame saveGame = new SaveGame();
         BallRoom ballRoom = new BallRoom();
-        boolean correct;
-        String choice;
+        String choice = "   ";
         do {
             printLocation(defeated);
-            choice = saveGame.getScanner().nextLine();
+            if(saveGame.getScanner().hasNextLine()) {
+                choice = saveGame.getScanner().nextLine();
+            }
             System.out.println(choice);
             switch (choice) {
                 case "person":
-                    correct = true;
                     break;
                 case "left":
-                    correct = false;
                     System.out.println("Not a valid entry, Please reenter");
                     break;
                 case "right":
-                    correct = false;
                     System.out.println("Not a valid entry, Please reenter");
                     break;
                 case "forward":
-                    correct = false;
                     System.out.println("Not a valid entry, Please reenter");
                     break;
                 case "behind":
-                    correct = true;
                     ballRoom.activities(newPastor, defeated);
                     break;
                 case "save" :
-                    saveGame.print(newPastor);
+                    saveGame.print(newPastor, defeated);
                 default:
-                    correct = false;
                     System.out.println("Not a valid entry, Please reenter");
             }
-        } while (!correct);
+        } while (true);
     }
 }
 

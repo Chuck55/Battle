@@ -146,7 +146,7 @@ public class Battle implements BattleBase {
                     newPastor.getBigBag().showWeapons();
                     //  newPastor.equipWeapon();
                     int x = newScanner.nextInt();
-                    System.out.println("Equipped " + newPastor.getBigBag().getWeaponItems().get(x).name);
+                    System.out.println("Equipped " + newPastor.getBigBag().getWeaponItems().get(x).getName());
                     newPastor.equipWeapon(newPastor.getBigBag().getWeaponItems().get(x));
                     break;
                 case 4:
